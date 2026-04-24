@@ -701,45 +701,4 @@
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
 </script>
 </body>
-<!-- ═══ API INTEGRATION SCRIPT ═══ -->
-<script>
-const API_BASE_URL = 'http://localhost:5000';
-
-async function loadDealsFromAPI() {
-  try {
-    const response = await fetch(`${API_BASE_URL}/api/deals`);
-    const result = await response.json();
-    return result.data || [];
-  } catch (error) {
-    console.error('❌ Error:', error);
-    return [];
-  }
-}
-
-async function renderDeals() {
-  const deals = await loadDealsFromAPI();
-  const dealsContainer = document.querySelector('#deals .grid');
-  
-  if (!dealsContainer) return;
-  
-  dealsContainer.innerHTML = deals.map(product => `
-    <div class="deal-card bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-md fade-up">
-      <div class="relative bg-white h-44 overflow-hidden">
-        <span class="absolute top-3 left-3 bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full">${product.discount}% OFF</span>
-      </div>
-      <div class="p-5">
-        <p class="text-xs text-gray-400 font-semibold uppercase tracking-wide mb-1">${product.brand}</p>
-        <h3 class="font-display font-bold text-blue-900 text-lg mb-2">${product.name}</h3>
-        <div class="flex items-baseline gap-2 mb-3">
-          <span class="font-display font-extrabold text-blue-700 text-2xl">₹${product.retailPrice.toLocaleString()}</span>
-          <span class="text-gray-400 line-through text-sm">₹${product.mrp.toLocaleString()}</span>
-        </div>
-        <span class="inline-block bg-yellow-50 text-yellow-600 text-xs font-semibold px-3 py-1 rounded-full">${product.features}</span>
-      </div>
-    </div>
-  `).join('');
-}
-
-document.addEventListener('DOMContentLoaded', renderDeals);
-</script>
 </html>
